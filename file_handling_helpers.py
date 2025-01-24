@@ -1,28 +1,26 @@
-
+import base64
 import getopt
-import requests
-import sys
+import html
 import json
-import re
+import logging
 import os
 import pandas as pd
-from pandas import json_normalize
-from datetime import datetime
-import logging
-import json
-from fpdf import FPDF
-import html
 import pdfkit
-import time
-from PyPDF2 import PdfMerger
 import plotly.express as px
-import pandas as pd
 import plotly.graph_objects as go
-from plotly.offline import plot
-import base64
+import requests
+import sys
+import re
+import time
+from datetime import datetime
+from fpdf import FPDF
 from io import BytesIO
+from pandas import json_normalize
+from plotly.offline import plot
+from PyPDF2 import PdfMerger
 
 EPOCH_TIME = str(int(time.time()))
+
 
 def assign_security_grade(high, medium, low):
     """
@@ -48,6 +46,7 @@ def assign_security_grade(high, medium, low):
     # If none of the above criteria are met, the security grade is considered to be below D.
     else:
         return 'F'
+
 
 def generate_table_rows(df):
     """
@@ -101,8 +100,8 @@ def generate_table_rows(df):
         html_rows += row_html
     return html_rows
 
+
 def create_heatmap_vulnerability_classes(vulnerability_counts_all_repos, image_folder):
-    
     # Convert the list of dictionaries to a DataFrame
     df = pd.DataFrame({list(d.keys())[0]: list(d.values())[0] for d in vulnerability_counts_all_repos}).T.fillna(0)
 
@@ -145,12 +144,10 @@ def create_heatmap_vulnerability_classes(vulnerability_counts_all_repos, image_f
         height=800   # Adjust the height based on the number of repos to display
     )
 
-
     # Save the figure as an image file
     fig.write_image(f"{image_folder}/heatmap_vulnerability_classes.png")
 
 def create_heatmap_owasp_top10_categories(owasp_top10_counts_all_repos, image_folder):
-    
     # Convert the list of dictionaries to a DataFrame
     df = pd.DataFrame({list(d.keys())[0]: list(d.values())[0] for d in owasp_top10_counts_all_repos}).T.fillna(0)
 
@@ -196,7 +193,6 @@ def create_heatmap_owasp_top10_categories(owasp_top10_counts_all_repos, image_fo
 
     # Save the figure as an image file
     fig.write_image(f"{image_folder}/heatmap_owasp_top10_categories.png")
-
 
 
 def create_bar_graph_open_vulns(data, image_folder):
@@ -425,6 +421,7 @@ def add_summary_table_and_save_as_html(data, output_filename):
         file.write(html_table)
     logging.debug(f"HTML table saved to {output_filename}")
 
+
 def combine_html_files(severity_and_state_counts_all_repos, vulnerability_counts_all_repos, owasp_top10_counts_all_repos, output_filename, output_pdf_filename, interesting_tag):
 
     # Transform the JSON data into a list of dictionaries, each representing a row in the DataFrame
@@ -477,11 +474,9 @@ def combine_html_files(severity_and_state_counts_all_repos, vulnerability_counts
     formatted_now = now.strftime("%Y-%m-%d %H:%M")
 
     graph_div_open_vulns = create_bar_graph_open_vulns(severity_and_state_counts_all_repos, folder_path)
-
     graph_div_fixed_vulns = create_bar_graph_fixed_vulns(severity_and_state_counts_all_repos, folder_path)
 
     create_heatmap_vulnerability_classes(vulnerability_counts_all_repos, folder_path)
-
     create_heatmap_owasp_top10_categories(owasp_top10_counts_all_repos, folder_path)
 
     relative_path_open = 'open.png'  # This is your relative path
