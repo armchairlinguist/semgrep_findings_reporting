@@ -38,5 +38,6 @@ jobs:
         with:
           name: requirementstxt
       - run: |
+          git config --global --add safe.directory /__w/semgrep_findings_reporting/semgrep_findings_reporting
           git commit -a requirements.txt
           semgrep ci --supply-chain 
