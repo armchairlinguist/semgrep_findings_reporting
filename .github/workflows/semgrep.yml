@@ -42,5 +42,5 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
           git add requirements.txt 
-          git commit requirements.txt
+          git commit -m 'commit for scan' requirements.txt
           semgrep ci --supply-chain 
