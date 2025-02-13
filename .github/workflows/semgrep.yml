@@ -39,6 +39,8 @@ jobs:
           name: requirementstxt
       - run: |
           git config --global --add safe.directory /__w/semgrep_findings_reporting/semgrep_findings_reporting
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
           git add requirements.txt 
           git commit requirements.txt
           semgrep ci --supply-chain 
