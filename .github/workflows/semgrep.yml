@@ -16,7 +16,7 @@ jobs:
       - name: Generate requirements file
         run: |
           pip3 install pip-tools
-          pip install pandas requests fpdf pdfkit PyPDF2 plotly
+          pip install pandas requests fpdf pdfkit PyPDF2 plotly mitmproxy==11.1.0
           pip list --format=freeze > requirements.txt
       - name: Upload Requirements File as Artifact
         uses: actions/upload-artifact@v4
